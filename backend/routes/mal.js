@@ -4,17 +4,22 @@ const axios = require('axios')
 const config = require('../config.json')
 const secret = require('../secret.json')
 
-const client = axios.create({
+const MyAnimeListClient = axios.create({
     baseURL: config.malAPI,
     headers: {"X-MAL-CLIENT-ID": secret.malId}
 })
 
-router.all('*', (req, res) => {
-    client.get().then(val => {
-        res.send(val.data)
-    }).catch(err => {
+router.all('*', async (req, res) => {
+    const route = req.url
+
+    try{
+        var resp = await MyAnimeListClient.get(route)
+    }catch(err){
         res.send(err)
-    })
+        return
+    }
+    
+    res.send(resp.data)
 })
 
 module.exports = router
