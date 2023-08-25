@@ -1,7 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createSelector } from '@reduxjs/toolkit'
 
 const initialState = {
-    anime: [],
+    entities: {},
+    id: [],
     len: 0
 }
 
@@ -12,16 +13,37 @@ export const malSlice = createSlice({
 
   reducers: {
     remove: (state, action) => {
-        state.anime.splice(action.payload, 1)
+        delete state.entities[action.payload]
+        state.entities.splice(action.payload, 1)
         --state.len
     },
-    add: (state, action) => {
-        state.anime.push(action.payload)
+    addOne: (state, action) => {
+      if(state.entities.hasOwnProperty(action.payload['id']))
+        return
+
+      state.entities.push(action.payload)
+      state.id.push(action.payload['id'])
+      ++state.len
+    },
+
+    addMany: (state, action) => {
+      action.payload.forEach(anime => {
+        if(state.entities.hasOwnProperty(anime.node['id']))
+          return
+
+        state.entities[anime.node['id']] = anime.node
+        state.id.push(anime.node['id'])
         ++state.len
+      })
     }
   }
 })
 
-export const { add, remove } = malSlice.actions
+export const selectMed = createSelector([
+    state => state.mal.entities
+  ], entities => Object.values(entities).map(entity => entity['main_picture']['medium'])
+)
+
+export const { addOne, addMany, remove } = malSlice.actions
 
 export default malSlice.reducer

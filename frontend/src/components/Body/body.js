@@ -1,33 +1,36 @@
 import './body.css';
+
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
+import { selectMed, addMany } from '../../redux/slices/malSlice';
 import MyAnimeList from '../../services/mal';
-import {useState} from 'react';
 
-function Body() {
-  const [data, setData] = useState([])
+function Body(props) {
+  const dispatch = useDispatch()
+  const ImgURL = useSelector(selectMed)
 
-  const client = new MyAnimeList()
-  const date = new Date()
-
-  const loader = (newData) => {
-    setData(prev => [...prev, ...newData])
-  }
+  useEffect(() => {
+    const client = new MyAnimeList()
+    client.loadSeasonalAnime(2022, 7, data => dispatch(addMany(data)))
+  }, [dispatch])
 
   return (
-    <>
-    <div className="Body">
-      <button onClick={() => client.loadSeasonalAnime(date.getFullYear(), date.getMonth(), loader)}></button>
-    </div>
+    <Container fluid className={props.className}>
+      <Row className='flex-grow-1 flex'>
+        <Col xs={5} className='green border'/>
 
-      <div className='flex'>
-        {data.map(val => (
-          <img 
-            src={val.node.main_picture.large}
-            height={200}
-            width={150}
-          />
-        ))}
-      </div>
-    </>
+        <Col className='grey border overflow-y-scroll'>
+          {ImgURL.map(url => <img src={url}/>)}
+        </Col>
+
+        <Col xs={5} className='red border'/>
+      </Row>
+    </Container>
   );
 }
 
