@@ -1,24 +1,24 @@
-.flex{
-    display: flex;
-    flex-wrap: wrap;
-}
-
-.green{
+.like-box{
     background-color: lightgreen;
+    border: 3px black solid;
 }
 
-.grey{
-    background-color:lightgray;
+.dislike-box{
+    background-color: #FF3E3E;
+    border: 3px black solid;
 }
 
-.red{
-    background-color: red;
+.queue-box{
+    background-color: grey;
+    border: 3px black solid;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }
 
-.border{
-    border: solid black 3px !important;
-}
-
-.no-pad{
-    padding: 0px;
+.queue-box::-webkit-scrollbar{
+    display: none;
 }

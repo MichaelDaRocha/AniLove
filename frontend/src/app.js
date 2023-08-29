@@ -9,7 +9,7 @@ const App = () => {
     return (
         <main className='app'>
             <Head/>
-            <Body className='fill flex'/>
+            <Body/>
         </main>
     )
 }

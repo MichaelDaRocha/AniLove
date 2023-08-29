@@ -7,12 +7,12 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import { selectMed, addMany } from '../../redux/slices/malSlice';
+import { mediumImg, addMany } from '../../redux/slices/malSlice';
 import MyAnimeList from '../../services/mal';
 
-function Body(props) {
+const Body = () => {
   const dispatch = useDispatch()
-  const ImgURL = useSelector(selectMed)
+  const imgUrls = useSelector(mediumImg)
 
   useEffect(() => {
     const client = new MyAnimeList()
@@ -20,15 +20,15 @@ function Body(props) {
   }, [dispatch])
 
   return (
-    <Container fluid className={props.className}>
-      <Row className='flex-grow-1 flex'>
-        <Col xs={5} className='green border'/>
+    <Container fluid>
+      <Row className='h-100'>
+        <Col xs={5} className='like-box'/>
 
-        <Col className='grey border overflow-y-scroll'>
-          {ImgURL.map(url => <img src={url}/>)}
+        <Col xs={2} className='queue-box h-100'>
+          {imgUrls.map(url => <img src={url} alt='anime'/>)}
         </Col>
 
-        <Col xs={5} className='red border'/>
+        <Col xs={5} className='dislike-box'/>
       </Row>
     </Container>
   );

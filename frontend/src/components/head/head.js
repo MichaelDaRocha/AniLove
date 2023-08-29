@@ -7,9 +7,9 @@ import Container from 'react-bootstrap/Container'
 const Head = () => {
 
     return (
-        <Navbar className='blue' data-bs-theme="dark">
+        <Navbar className='nav-blue' data-bs-theme="dark">
             <Container>
-                <Navbar.Brand className='large-font'>
+                <Navbar.Brand className='nav-font'>
                     <img
                         alt="logo"
                         src="favicon.ico"

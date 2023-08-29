@@ -39,7 +39,7 @@ export const malSlice = createSlice({
   }
 })
 
-export const selectMed = createSelector([
+export const mediumImg = createSelector([
     state => state.mal.entities
   ], entities => Object.values(entities).map(entity => entity['main_picture']['medium'])
 )
