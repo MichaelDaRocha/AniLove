@@ -1,6 +1,6 @@
 import './body.css';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Container from 'react-bootstrap/Container'
@@ -12,11 +12,12 @@ import MyAnimeList from '../../services/mal';
 
 const Body = () => {
   const dispatch = useDispatch()
+  
+  const client = useRef(new MyAnimeList())
   const imgUrls = useSelector(mediumImg)
 
   useEffect(() => {
-    const client = new MyAnimeList()
-    client.loadSeasonalAnime(2022, 7, data => dispatch(addMany(data)))
+    client.current.loadThisSeasonAnime(data => dispatch(addMany(data)))
   }, [dispatch])
 
   return (
@@ -25,7 +26,7 @@ const Body = () => {
         <Col xs={5} className='like-box'/>
 
         <Col xs={2} className='queue-box h-100'>
-          {imgUrls.map(url => <img src={url} alt='anime'/>)}
+          {imgUrls.map(url => <img src={url} alt='anime' key={url}/>)}
         </Col>
 
         <Col xs={5} className='dislike-box'/>
