@@ -39,9 +39,41 @@ export const malSlice = createSlice({
   }
 })
 
-export const mediumImg = createSelector([
-    state => state.mal.entities
-  ], entities => Object.values(entities).map(entity => entity['main_picture']['medium'])
+export const selectMImageHTML = createSelector([
+    state => state.mal.entities,
+    state => state.mal.id
+  ], (entities, ids) => ids.map(id =>
+    <img
+      src={entities[id]['main_picture']['medium']}
+      alt={entities[id]['title']}
+      key={id}
+    />)
+)
+
+export const selectImgsM = createSelector(
+  [
+    state => state.mal.entities,
+    state => state.mal.ids
+  ], (entities, ids) => ids.map(id => {  
+    return {
+      src: entities[id]['main_picture']['medium'],
+      alt: entities[id]['title'],
+      key: id
+    }
+  })
+)
+
+export const selectImgsL = createSelector(
+  [
+    state => state.mal.entities,
+    state => state.mal.id
+  ], (entities, ids) => ids.map(id => {  
+    return {
+      src: entities[id]['main_picture']['large'],
+      alt: entities[id]['title'],
+      key: id
+    }
+  })
 )
 
 export const { addOne, addMany, remove } = malSlice.actions

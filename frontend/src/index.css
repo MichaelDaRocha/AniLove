@@ -1,0 +1,17 @@
+@keyframes pulse {
+    0%,
+    100% {
+      animation-timing-function: ease-in;
+    }
+    50% {
+      transform: scale(1.1);
+    }
+}
+
+.pulse-hover:hover{
+    animation: pulse 2.5s infinite;
+}
+
+.pulse-hover:active{
+    pointer-events: none;
+}

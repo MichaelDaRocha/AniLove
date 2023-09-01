@@ -7,14 +7,21 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import { mediumImg, addMany } from '../../redux/slices/malSlice';
+import { selectImgsL, addMany } from '../../redux/slices/malSlice';
+import DraggableAnime from '../draggable-anime/draggable-anime'
 import MyAnimeList from '../../services/mal';
 
 const Body = () => {
   const dispatch = useDispatch()
   
   const client = useRef(new MyAnimeList())
-  const imgUrls = useSelector(mediumImg)
+  const imgsL = useSelector(selectImgsL).map(imgsL => (
+    <DraggableAnime
+      src={imgsL.src}
+      alt={imgsL.alt}
+      id={imgsL.key}
+    />
+  ))
 
   useEffect(() => {
     client.current.loadThisSeasonAnime(data => dispatch(addMany(data)))
@@ -26,7 +33,7 @@ const Body = () => {
         <Col xs={5} className='like-box'/>
 
         <Col xs={2} className='queue-box h-100'>
-          {imgUrls.map(url => <img src={url} alt='anime' key={url}/>)}
+          {imgsL}
         </Col>
 
         <Col xs={5} className='dislike-box'/>

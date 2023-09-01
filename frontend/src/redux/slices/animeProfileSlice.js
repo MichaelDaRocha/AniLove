@@ -1,5 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import MyAnimeList from '../../services/mal'
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
     like: [],
@@ -12,9 +11,8 @@ export const animeProfileSlice = createSlice({
 
     initialState: initialState,
 
-    extraReducers: builder => {
-        builder
-        .addCase(addLike.fulfilled, (state, action) => {
+    reducers:{
+        addLike: (state, action) => {
             state.like.push(action.payload.id)
 
             action.payload.genres.forEach(genre => {
@@ -24,8 +22,9 @@ export const animeProfileSlice = createSlice({
                     state.tags[genre.name] = 1
                 }
             })
-        })
-        .addCase(addDislike.fulfilled, (state, action) => {
+        },
+
+        addDislike: (state, action) => {
             state.dislike.push(action.payload.id)
 
             action.payload.genres.forEach(genre => {
@@ -35,19 +34,8 @@ export const animeProfileSlice = createSlice({
                     state.tags[genre.name] = -1
                 }
             })
-        })
+        }
     }
-})
-
-const client = new MyAnimeList()
-export const addLike = createAsyncThunk('animeProfile/addLike', async showId => {
-    const resp = await client.getShowTags(showId)
-    return resp
-})
-
-export const addDislike = createAsyncThunk('animeProfile/addDislike', async showId => {
-    const resp = await client.getShowTags(showId)
-    return resp
 })
 
 export default animeProfileSlice.reducer

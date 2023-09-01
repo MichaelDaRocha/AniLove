@@ -37,8 +37,10 @@ export default class MyAnimeList{
             return 9
     }
 
-    async loadSeasonalAnime(year, monthNum, loadFn){
-        const str = `/anime/season/${year}/${this.#monthMap[monthNum]}?sort=anime_num_list_users&fields=start_date,media_type`
+    async loadSeasonalAnime(year, month, loadFn){
+        const monthNum = month-1
+
+        const str = `/anime/season/${year}/${this.#monthMap[monthNum]}?sort=anime_num_list_users&fields=start_date,media_type,genres`
         const min_date = new Date(`${year}-${this.#earliestMonth(monthNum)+1}-01`)
 
         let resp = await this.#client.get(str)
@@ -63,12 +65,6 @@ export default class MyAnimeList{
 
     async loadThisSeasonAnime(loadFn){
         const d = new Date()
-        await this.loadSeasonalAnime(d.getFullYear(), d.getMonth(), loadFn)
-    }
-
-    async getShowTags(showId){
-        const str = `/anime/${showId}?fields=genres`
-        let resp = await this.#client.get(str)
-        return resp.data
+        await this.loadSeasonalAnime(d.getFullYear(), d.getMonth()+1, loadFn)
     }
 }
