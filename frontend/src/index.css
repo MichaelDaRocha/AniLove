@@ -15,3 +15,16 @@
 .pulse-hover:active{
     pointer-events: none;
 }
+
+.black-border{
+  border: black 3px solid !important;
+}
+
+.hide-scroll{
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scroll::-webkit-scrollbar{
+  display: none;
+}

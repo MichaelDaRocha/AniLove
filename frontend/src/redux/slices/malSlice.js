@@ -12,16 +12,16 @@ export const malSlice = createSlice({
   initialState: initialState,
 
   reducers: {
-    remove: (state, action) => {
+    removeById: (state, action) => {
         delete state.entities[action.payload]
-        state.entities.splice(action.payload, 1)
+        state.id.splice(state.id.indexOf(action.payload), 1)
         --state.len
     },
     addOne: (state, action) => {
       if(state.entities.hasOwnProperty(action.payload['id']))
         return
 
-      state.entities.push(action.payload)
+      state.entities[action.payload['id']] = action.payload
       state.id.push(action.payload['id'])
       ++state.len
     },
@@ -29,7 +29,7 @@ export const malSlice = createSlice({
     addMany: (state, action) => {
       action.payload.forEach(anime => {
         if(state.entities.hasOwnProperty(anime.node['id']))
-          return
+          return;
 
         state.entities[anime.node['id']] = anime.node
         state.id.push(anime.node['id'])
@@ -58,7 +58,7 @@ export const selectImgsM = createSelector(
     return {
       src: entities[id]['main_picture']['medium'],
       alt: entities[id]['title'],
-      key: id
+      id: id
     }
   })
 )
@@ -71,11 +71,13 @@ export const selectImgsL = createSelector(
     return {
       src: entities[id]['main_picture']['large'],
       alt: entities[id]['title'],
-      key: id
+      id: id
     }
   })
 )
 
-export const { addOne, addMany, remove } = malSlice.actions
+export const selectById = (state, id) => state.mal.entities.hasOwnProperty(id) ? state.mal.entities[id] : null
+
+export const { addOne, addMany, removeById } = malSlice.actions
 
 export default malSlice.reducer

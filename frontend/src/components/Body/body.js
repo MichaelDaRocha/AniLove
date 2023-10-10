@@ -1,42 +1,31 @@
-import './body.css';
-
-import { useEffect, useRef } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useRef } from 'react'
 
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import { selectImgsL, addMany } from '../../redux/slices/malSlice';
-import DraggableAnime from '../draggable-anime/draggable-anime'
-import MyAnimeList from '../../services/mal';
+import AnimeList from '../anime-list/anime-list'
+import Block from '../block/block'
 
-const Body = () => {
-  const dispatch = useDispatch()
+const Body = () => {  
+  const like = useRef()
+  const dislike = useRef()
+
   
-  const client = useRef(new MyAnimeList())
-  const imgsL = useSelector(selectImgsL).map(imgsL => (
-    <DraggableAnime
-      src={imgsL.src}
-      alt={imgsL.alt}
-      id={imgsL.key}
-    />
-  ))
-
-  useEffect(() => {
-    client.current.loadThisSeasonAnime(data => dispatch(addMany(data)))
-  }, [dispatch])
-
   return (
     <Container fluid>
       <Row className='h-100'>
-        <Col xs={5} className='like-box'/>
-
-        <Col xs={2} className='queue-box h-100'>
-          {imgsL}
+        <Col xs={5} className='p-0'>
+          <Block color='lightgreen' refz={like}/>
         </Col>
 
-        <Col xs={5} className='dislike-box'/>
+        <Col xs={2} className='p-0 h-100'>
+          <AnimeList like={like} dislike={dislike}/>
+        </Col>
+
+        <Col xs={5} className='p-0'>
+          <Block color='#ff474c' refz={dislike}/>
+        </Col>
       </Row>
     </Container>
   );

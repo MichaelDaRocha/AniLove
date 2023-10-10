@@ -38,4 +38,6 @@ export const animeProfileSlice = createSlice({
     }
 })
 
+export const {addLike, addDislike} = animeProfileSlice.actions
+
 export default animeProfileSlice.reducer
