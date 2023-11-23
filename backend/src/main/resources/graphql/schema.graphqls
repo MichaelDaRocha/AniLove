@@ -1,0 +1,39 @@
+type Query{
+    # random(pageNum: int): Page,
+    # recommend(flavor: [string]!): Page,
+    find(idMal: Int!): Media
+}
+
+
+type Page{
+    pageInfo: PageInfo
+    media: [Media]
+}
+
+type PageInfo{
+    total: Int
+    perPage: Int
+    currentPage: Int
+    lastPage: Int
+    hasNextPage: Boolean
+}
+
+type Media{
+    idMal: Int
+    title: Title
+    coverImage: CoverImage
+    description: String
+    bannerImage: String
+    genres: [String]
+}
+
+type Title{
+    romaji: String
+    english: String
+}
+
+type CoverImage{
+    medium: String
+    large: String
+    extraLarge: String
+}

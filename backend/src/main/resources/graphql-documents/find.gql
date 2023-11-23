@@ -1,0 +1,17 @@
+query find($idMal: Int!){
+    Media(idMal: $idMal){
+        idMal
+        title {
+            romaji
+            english
+        }
+        coverImage{
+            medium
+            large
+            extraLarge
+        }
+        description(asHtml:false)
+        bannerImage
+        genres
+    }
+}
