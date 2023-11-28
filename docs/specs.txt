@@ -1,0 +1,63 @@
+Front End features:
+
+1. infinite scroll with lazy loading / unloading
+2. redux store to track:
+	- rated shows (load this from localstorage)
+	- shows that can be rated
+	- recommended shows (only update if shows that can be rated changes)
+	
+3. like, dislike and neutral buttons for shows
+4. experiment with using banner image as background for each show (increase opacity of background)
+5. Allow users to rate recommendations incase they have already seen it
+6. Allow users to overwrite reviews in the history tab
+7. Remove elements from rating/suggestion webpage DOMs if the user provides a rating
+8. Keep track of user preferences in JSON
+
+Libraries:
+-React
+-React-router
+-Redux
+-Redux toolkit (Look into redux graphql support)
+-Apollo
+-Jest
+-react bootstrap
+
+
+
+
+
+
+
+Back End Features:
+
+1. Handle querying graphql api provided by AniList
+2. allow params specifying shows to exclude
+3. allow params specifying tags to include/exclude
+4. generate a psuedo-random list of anime, this list should contain
+	- some seasonal shows
+	- some all time classics
+	- some random shows
+5. When generating recommendations list sort by popularity
+
+
+Libraries:
+-Spring Boot
+-Spring GraphQL
+-Spring Web
+-Junit5
+-Spring boot devtools
+
+
+
+
+
+
+
+
+
+
+
+THINGS TO RESEARCH:
+1. Redux x GraphQL
+2. Spring Data JPA
+3. Spring GraphQL

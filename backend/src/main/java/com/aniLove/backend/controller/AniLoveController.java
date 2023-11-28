@@ -19,16 +19,16 @@ public class AniLoveController {
     private AniLoveService aniList;
 
 
-    // @QueryMapping
-    // public Page random(ArgumentValue<Integer> page){
-    //     Page rand = aniList.generate(page);
-    //     return rand;
-    // }
+    @QueryMapping
+    public Mono<Page> generate(ArgumentValue<Integer[]> pageNum, ArgumentValue<Integer[]> notIn){
+        Mono<Page> rand = aniList.generate(pageNum, notIn);
+        return rand;
+    }
 
 
     // @QueryMapping
-    // public Page recommend(@Argument String[] flavor){
-    //     Page rec = aniList.recommend(flavor);
+    // public Mono<Page> recommend(@Argument String[] flavor){
+    //     Mono<Page> rec = aniList.recommend(flavor);
     //     return rec;
     // }
 

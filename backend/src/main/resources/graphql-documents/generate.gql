@@ -1,0 +1,76 @@
+query generate($date: FuzzyDateInt!){
+    popular: Page(perPage:20){
+        pageInfo{
+            total,
+            currentPage,
+            lastPage,
+            hasNextPage
+        }
+        media(type:ANIME sort:POPULARITY_DESC duration_greater:20 episodes_greater:9){
+            id
+            idMal
+            title{
+                romaji
+                english
+            }
+            coverImage{
+                medium
+                large
+                extraLarge
+            }
+            description
+            bannerImage
+            genres
+        }
+    }
+  
+    recent: Page(perPage:20){
+        pageInfo{
+            total,
+            currentPage,
+            lastPage,
+            hasNextPage
+        }
+        media(type:ANIME sort:POPULARITY_DESC endDate_greater:$date duration_greater:20 episodes_greater:9){
+            id
+            idMal
+            title{
+                romaji
+                english
+            }
+            coverImage{
+                medium
+                large
+                extraLarge
+            }
+            description
+            bannerImage
+            genres
+        }
+    }
+    
+    niche: Page(perPage:10){
+        pageInfo{
+            total,
+            currentPage,
+            lastPage,
+            hasNextPage
+        }
+        media(type:ANIME sort:SCORE_DESC popularity_lesser:1300 duration_greater:20 episodes_greater:9){
+            id
+            idMal
+            title{
+            romaji
+            english
+            }
+            coverImage{
+            medium
+            large
+            extraLarge
+            }
+            description
+            bannerImage
+            genres
+        }
+    }
+}

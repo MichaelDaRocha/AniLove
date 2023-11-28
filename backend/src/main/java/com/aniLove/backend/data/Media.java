@@ -30,6 +30,7 @@ public class Media {
         public String getExtraLarge(){return extraLarge;}
     }
 
+    private int id;
     private int idMal;
     private Title title;
     private CoverImage coverImage;
@@ -37,7 +38,8 @@ public class Media {
     private String bannerImage;
     private String[] genres;
 
-    public Media(int idMal, Title title, CoverImage coverImage, String description, String bannerImage, String[] genres){
+    public Media(int id, int idMal, Title title, CoverImage coverImage, String description, String bannerImage, String[] genres){
+        this.id = id;
         this.idMal = idMal;
         this.title = title;
         this.coverImage = coverImage;
@@ -46,6 +48,7 @@ public class Media {
         this.genres = genres;
     }
 
+    public int getId(){return id;}
     public int getMalId(){return idMal;}
     public Title getTitle(){return title;}
     public CoverImage getCoverImage(){return coverImage;}

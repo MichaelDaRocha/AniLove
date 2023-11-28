@@ -1,6 +1,9 @@
 package com.aniLove.backend.service;
 
-import org.springframework.context.annotation.Bean;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import org.springframework.graphql.client.ClientResponseField;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.graphql.data.ArgumentValue;
 import org.springframework.stereotype.Service;
@@ -14,27 +17,49 @@ import reactor.core.publisher.Mono;
 @Service
 public class AniLoveService {
     HttpGraphQlClient graphQlClient;
+    final LocalDateTime currentDate;
+    final DateTimeFormatter format;
 
     public AniLoveService(){
         WebClient webClient = WebClient.builder().baseUrl("https://graphql.anilist.co").build();
         graphQlClient = HttpGraphQlClient.builder(webClient).build();
+        format = DateTimeFormatter.ofPattern("yyyyMMdd");
+        currentDate = LocalDateTime.now();
     }
 
-    // public Page generate(ArgumentValue<Integer> pageNum){
-        
-    // }
+    public Mono<Page> generate(ArgumentValue<Integer[]> pageNum, ArgumentValue<Integer[]> notIn){
+        LocalDateTime date;
+        synchronized(currentDate){
+            date = currentDate.minusYears(3);
+        }
+        Integer dateInt = Integer.parseInt(date.format(format));
+
+
+        Mono<Page> animes = graphQlClient.documentName("generate")
+            .variable("date", dateInt)
+            .execute()
+            .map(response -> {
+                Page popular = response.field("popular").toEntity(Page.class);
+                Page recent = response.field("recent").toEntity(Page.class);
+                Page niche = response.field("niche").toEntity(Page.class);
+                
+
+                return Page.merge(popular, recent, niche);
+            });
+
+        return animes;
+    }
 
     // public Page recommend(String[] flavor){
 
     // }
 
-    public Mono<Media> find(Integer idMal){
+    public Mono<Media> find(Integer id){
+        
         Mono<Media> anime = graphQlClient.documentName("find")
-            .variable("idMal", idMal)
+            .variable("id", id)
             .retrieve("Media")
             .toEntity(Media.class);
-
-        // Mono<Media> anime = graphQlClient.document("query{Media(idMal:1){title{romaji, english}}}").retrieve("Media").toEntity(Media.class);
 
         return anime;
     }

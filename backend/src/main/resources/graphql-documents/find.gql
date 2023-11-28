@@ -1,5 +1,6 @@
-query find($idMal: Int!){
-    Media(idMal: $idMal){
+query find($id: Int!){
+    Media(id: $id){
+        id
         idMal
         title {
             romaji

@@ -1,7 +1,7 @@
 type Query{
-    # random(pageNum: int): Page,
-    # recommend(flavor: [string]!): Page,
-    find(idMal: Int!): Media
+    generate(pageNum: Int): Page,
+    # recommend(flavor: [String]!): Page,
+    find(id: Int!): Media
 }
 
 
@@ -12,13 +12,13 @@ type Page{
 
 type PageInfo{
     total: Int
-    perPage: Int
     currentPage: Int
     lastPage: Int
     hasNextPage: Boolean
 }
 
 type Media{
+    id: Int
     idMal: Int
     title: Title
     coverImage: CoverImage
