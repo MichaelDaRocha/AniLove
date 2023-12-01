@@ -1,7 +1,6 @@
-query generate($date: FuzzyDateInt!){
-    popular: Page(perPage:20){
+query generate($date: FuzzyDateInt! $page: Int){
+    popular: Page(perPage:20 page:$page){
         pageInfo{
-            total,
             currentPage,
             lastPage,
             hasNextPage
@@ -24,9 +23,8 @@ query generate($date: FuzzyDateInt!){
         }
     }
   
-    recent: Page(perPage:20){
+    recent: Page(perPage:20 page:$page){
         pageInfo{
-            total,
             currentPage,
             lastPage,
             hasNextPage
@@ -49,9 +47,8 @@ query generate($date: FuzzyDateInt!){
         }
     }
     
-    niche: Page(perPage:10){
+    niche: Page(perPage:10 page:$page){
         pageInfo{
-            total,
             currentPage,
             lastPage,
             hasNextPage

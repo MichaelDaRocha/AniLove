@@ -7,24 +7,24 @@ import java.util.List;
 
 public class Page {
     public static class PageInfo{
-        private Integer total;
+        private Integer count;
         private Integer currentPage;
         private Integer lastPage;
         private Boolean hasNextPage;
 
-        public PageInfo(Integer total, Integer currentPage, Integer lastPage, Boolean hasNextPage){
-            this.total = total;
+        public PageInfo(Integer count, Integer currentPage, Integer lastPage, Boolean hasNextPage){
+            this.count = count;
             this.currentPage = currentPage;
             this.lastPage = lastPage;
             this.hasNextPage = hasNextPage;
         }
 
-        public Integer getTotal(){return total;}
+        public Integer getCount(){return count;}
         public Integer getCurrentPage(){return currentPage;}
         public Integer getLastPage(){return lastPage;}
         public Boolean hasNextPage(){return hasNextPage;}
 
-        public void setTotal(Integer total){this.total = total;}
+        public void setCount(Integer count){this.count = count;}
         public void setCurrentPage(Integer currentPage){this.currentPage = currentPage;}
         public void setLastPage(Integer lastPage){this.lastPage = lastPage;}
         public void setHasNextPage(Boolean hasNextPage){this.hasNextPage = hasNextPage;}
@@ -50,7 +50,7 @@ public class Page {
 
             if(tmpInfo != null){
                 retInfo = new PageInfo(
-                    tmpInfo.getTotal(), 
+                    tmpInfo.getCount(), 
                     tmpInfo.getCurrentPage(), 
                     tmpInfo.getLastPage(),
                     tmpInfo.hasNextPage()
@@ -72,8 +72,8 @@ public class Page {
             List<Media> pMedia = page.getMedia();
 
             if(pInfo != null){
-                if(pInfo.getTotal() != null)
-                    retInfo.setTotal(Math.max(retInfo.getTotal(), pInfo.getTotal()));
+                if(pInfo.getCount() != null)
+                    retInfo.setCount(retInfo.getCount() + pInfo.getCount());
                 if(pInfo.getCurrentPage() != null)
                     retInfo.setCurrentPage(Math.min(retInfo.getCurrentPage(), pInfo.getCurrentPage()));
                 if(pInfo.getLastPage() != null)
@@ -83,12 +83,18 @@ public class Page {
             }
 
             if(pMedia != null){
+                Integer count = 0;
                 for(Media anime : pMedia){
                     if(!dups.contains(anime.getId())){
                         retMedia.add(anime);
                         dups.add(anime.getId());
+                        ++count;
                     }
                 }
+                if(retInfo.getCount() != null)
+                    retInfo.setCount(retInfo.getCount() + count);
+                else
+                    retInfo.setCount(count);
             }
         }
 

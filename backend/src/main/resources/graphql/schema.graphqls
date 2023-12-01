@@ -1,5 +1,5 @@
 type Query{
-    generate(pageNum: Int): Page,
+    generate(page: Int): Page,
     # recommend(flavor: [String]!): Page,
     find(id: Int!): Media
 }
@@ -11,7 +11,7 @@ type Page{
 }
 
 type PageInfo{
-    total: Int
+    count: Int
     currentPage: Int
     lastPage: Int
     hasNextPage: Boolean
