@@ -1,6 +1,6 @@
 type Query{
-    generate(page: Int): Page,
-    # recommend(flavor: [String]!): Page,
+    generate(page: Int!): Page,
+    recommend(page: Int! genre_in: [String]! id_not_in: [Int]): Page,
     find(id: Int!): Media
 }
 

@@ -1,24 +1,21 @@
 package com.aniLove.backend.service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.Cache.ValueWrapper;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.Caching;
 import org.springframework.graphql.client.HttpGraphQlClient;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.aniLove.backend.data.Media;
 import com.aniLove.backend.data.Page;
+import com.aniLove.backend.data.Time;
 
 import reactor.core.publisher.Mono;
 
@@ -28,74 +25,60 @@ public class AniLoveService {
     CacheManager cacheManager;
     HttpGraphQlClient graphQlClient;
 
-    final LocalDateTime currentDateMin3y;
-    final DateTimeFormatter format;
-    final Integer idCacheKey;
-
-    public AniLoveService(){
-        WebClient webClient = WebClient.builder().baseUrl("https://graphql.anilist.co").build();
+    public AniLoveService(@Value("${config.anilist.baseurl}") String baseUrl){
+        WebClient webClient = WebClient.builder().baseUrl(baseUrl).build();
         graphQlClient = HttpGraphQlClient.builder(webClient).build();
-        format = DateTimeFormatter.ofPattern("yyyyMMdd");
-        currentDateMin3y = LocalDateTime.now().minusYears(3);
-        idCacheKey = 0;
     }
 
     @Cacheable(value = "generate", sync = true)
     public Mono<Page> generate(Integer page){
-        System.out.println("GENERATING!");
-        Integer dateInt = Integer.parseInt(currentDateMin3y.format(format));
+        page = page == null ? 1 : page;
 
-        Mono<Page> animes = graphQlClient.documentName("generate")
-            .variable("date", dateInt)
+        Cache cache = cacheManager.getCache("seen");
+        ValueWrapper wrapper = cache != null ? cache.get("seen") : null;
+        LinkedList<Integer> seen = wrapper != null ? (LinkedList<Integer>) wrapper.get() : new LinkedList<>();
+
+        return graphQlClient.documentName("generate")
             .variable("page", page)
+            .variable("id_not_in", seen)
+            .variable("date", Time.past)
             .execute()
             .map(response -> {
                 Page popular = response.field("popular").toEntity(Page.class);
                 Page recent = response.field("recent").toEntity(Page.class);
                 Page niche = response.field("niche").toEntity(Page.class);
+                Page finPage = Page.merge(popular, recent, niche);
                 
-                Page ret = Page.merge(popular, recent, niche);
-                List<Media> retMedia = ret.getMedia();
-                readUpdateSaveId(cacheManager, retMedia);
+                finPage.getMedia().forEach(media -> seen.add(media.getId()));
+                cache.put("seen", seen);
 
-                return ret;
+                return finPage;
             });
-
-        return animes;
     }
 
-    @Scheduled(fixedDelayString = "${config.cache.schedule.delay}", initialDelayString ="${config.cache.schedule.initialDelay}")
-    @Caching(evict = {
-        @CacheEvict(value="generate", allEntries = true),
-        @CacheEvict(value="id", allEntries = true)
-    })
-    public void clearGenCache(){}
+    @Cacheable(value = "recommend", sync = true)
+    public Mono<Page> recommend(Integer page, List<String> genre_in, List<Integer> id_not_in){
+        id_not_in = id_not_in == null ? new LinkedList<>() : id_not_in;
 
-    public synchronized void readUpdateSaveId(CacheManager cacheManager, List<Media> media){
-        Cache cache = cacheManager.getCache("id");
-        ValueWrapper wrapper = cache.get(idCacheKey);
-        final HashSet<Integer> idSet;
-        if(wrapper == null){
-            idSet = new HashSet<Integer>();
-            cache.put(idCacheKey, idSet);
-        } else{
-            idSet = (HashSet<Integer>) wrapper.get();
-        }
-
-        media.removeIf(anime -> !idSet.add(anime.getId()));
+        return graphQlClient.documentName("recommend")
+                .variable("page", page)
+                .variable("genre_in", genre_in)
+                .variable("id_not_in", id_not_in)
+                .variable("date", Time.past)
+                .execute()
+                .map(response -> {
+                    Page popular = response.field("popular").toEntity(Page.class);
+                    Page recent = response.field("recent").toEntity(Page.class);
+                    Page niche = response.field("niche").toEntity(Page.class);
+                    return Page.merge(popular, recent, niche);
+                });
     }
 
-    // public Page recommend(String[] flavor){
-
-    // }
-
+    @Cacheable(value = "find", sync = true)
     public Mono<Media> find(Integer id){
-        
-        Mono<Media> anime = graphQlClient.documentName("find")
+        return graphQlClient.documentName("find")
             .variable("id", id)
             .retrieve("Media")
             .toEntity(Media.class);
-
-        return anime;
     }
 }

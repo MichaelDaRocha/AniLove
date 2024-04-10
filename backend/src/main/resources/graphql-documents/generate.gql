@@ -1,11 +1,11 @@
-query generate($date: FuzzyDateInt! $page: Int){
+query generate($page: Int! $id_not_in: [Int]! $date: FuzzyDateInt!){
     popular: Page(perPage:20 page:$page){
         pageInfo{
             currentPage,
             lastPage,
             hasNextPage
         }
-        media(type:ANIME sort:POPULARITY_DESC duration_greater:20 episodes_greater:9){
+        media(type:ANIME sort:POPULARITY_DESC duration_greater:20 episodes_greater:9 id_not_in: $id_not_in){
             id
             idMal
             title{
@@ -29,7 +29,7 @@ query generate($date: FuzzyDateInt! $page: Int){
             lastPage,
             hasNextPage
         }
-        media(type:ANIME sort:POPULARITY_DESC endDate_greater:$date duration_greater:20 episodes_greater:9){
+        media(type:ANIME sort:POPULARITY_DESC endDate_greater:$date duration_greater:20 episodes_greater:9 id_not_in: $id_not_in){
             id
             idMal
             title{
@@ -53,7 +53,7 @@ query generate($date: FuzzyDateInt! $page: Int){
             lastPage,
             hasNextPage
         }
-        media(type:ANIME sort:SCORE_DESC popularity_lesser:1300 duration_greater:20 episodes_greater:9){
+        media(type:ANIME sort:SCORE_DESC popularity_lesser:1300 duration_greater:20 episodes_greater:9 id_not_in: $id_not_in){
             id
             idMal
             title{
