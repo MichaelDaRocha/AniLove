@@ -1,0 +1,27 @@
+.header{
+    color: var(--white);
+    background-color: var(--red);
+    font-size: 26px;
+}
+
+.header-title{
+    color: var(--white);
+}
+
+@media screen and (width < 768px) {
+    .header-title{
+        flex-grow: 1;
+    }
+
+    .header-collapse{
+        order: 6 !important;
+        border-top: 3px double black;
+    }
+}
+
+.header-logo{
+    width: 50px;
+    border: solid 2px black;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+}

@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./component/Header/Header"
+import Rate from "./component/Rate/Rate"
+import History from "./component/History/History"
+import Recommend from "./component/Recommend/Recommend"
 
-function App() {
+import { store } from "./redux/store"
+
+import { Provider } from "react-redux"
+import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+
+
+
+const App = () => {
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Provider store={store}>
+      <Router>
+        <Header/>
+        <Routes>
+          
+            <Route path="/" Component={Rate} />
+            <Route path="/History" Component={History} />
+            <Route path="/Recommend" Component={Recommend} />
+        </Routes>
+      </Router>
+    </Provider>
+  )
 }
 
 export default App;
