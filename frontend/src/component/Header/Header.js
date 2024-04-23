@@ -10,13 +10,12 @@ import { DarkModeSwitch } from 'react-toggle-dark-mode'
 import { useState } from 'react';
 
 const Header = () => {
-    const [expanded, setExpanded] = useState(false);
+    const isDarkMode = useSelector(state => state.darkMode.isDarkMode)
+    const [expanded, setExpanded] = useState(false)
+    
     const dispatch = useDispatch()
     const toggleDarkMode = checked => dispatch(setDarkMode(checked))
-    const isDarkMode = useSelector(state => state.darkMode.isDarkMode)
-
-
-    const toggleExpanded = () => setTimeout(() => setExpanded(prev => !prev), 100)
+    const toggleExpanded = () => { if(window.innerWidth < 768) setTimeout(() => setExpanded(prev => !prev), 100) }
 
     return (
         <Navbar sticky='top' className='p-1 header' expand='md' expanded={expanded}>

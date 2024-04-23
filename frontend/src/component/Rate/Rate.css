@@ -1,0 +1,18 @@
+.rate-dark{
+    background-color: black;
+}
+
+.rate-light{
+    background-color: whitesmoke;
+}
+
+.rate-flex{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.rate-container{
+    width: 90%;
+    margin: auto;
+}

@@ -1,11 +1,17 @@
-import { useQuery, gql } from "@apollo/client"
-import { useState } from "react"
-import Spinner from "react-bootstrap/Spinner"
+import './Rate.css'
 
+import { useQuery, gql } from "@apollo/client"
 import { GENERATE } from "../../graphql/Query"
+
+import { useState } from "react"
+import { useSelector } from 'react-redux'
+import { selectDarkMode } from '../../redux/slices/darkModeSlice'
+
+import Spinner from "react-bootstrap/Spinner"
 import Card from "../Card/Card"
 
 const Rate = () => {
+    const isDarkMode = useSelector(selectDarkMode)
     const [pageNum, setPageNum] = useState(1)
     const {loading, data, refetch} = useQuery(
         gql(GENERATE),
@@ -21,8 +27,10 @@ const Rate = () => {
         
     
     return (
-        <div>
-            {render}
+        <div className={isDarkMode ? 'rate-dark': 'rate-light'}>
+            <div className="rate-container rate-flex pt-2">
+                {render}
+            </div>
         </div>
     )
 }

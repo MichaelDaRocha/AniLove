@@ -17,6 +17,10 @@
         order: 6 !important;
         border-top: 3px double black;
     }
+
+    .header-collapse > * {
+        margin-right: 0px !important;
+    }
 }
 
 .header-logo{
