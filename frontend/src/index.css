@@ -1,8 +1,13 @@
 :root{
-  --red: #FF204E;
-  --black: #3D0000;
-  --black-2: #000000;
-  --white: #dedbce;
+  --primary-red: #FF204E;
+  --primary-black: #000000;
+  --primary-white: #dedbce;
+}
+
+#root{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 body {

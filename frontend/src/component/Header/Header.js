@@ -1,20 +1,16 @@
 import './Header.css'
 
 import { useSelector, useDispatch } from 'react-redux';
-import { setDarkMode } from '../../redux/slices/darkModeSlice'; 
 
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom'
-import { DarkModeSwitch } from 'react-toggle-dark-mode'
 import { useState } from 'react';
 
 const Header = () => {
-    const isDarkMode = useSelector(state => state.darkMode.isDarkMode)
     const [expanded, setExpanded] = useState(false)
     
     const dispatch = useDispatch()
-    const toggleDarkMode = checked => dispatch(setDarkMode(checked))
     const toggleExpanded = () => { if(window.innerWidth < 768) setTimeout(() => setExpanded(prev => !prev), 100) }
 
     return (
@@ -35,13 +31,6 @@ const Header = () => {
                     Recommend
                 </Nav.Link>
             </Navbar.Collapse>
-
-            <DarkModeSwitch
-                className='me-3'
-                checked={isDarkMode}
-                onChange={toggleDarkMode}
-                size={40}
-            />
 
             <Navbar.Toggle onClick={toggleExpanded}/>
         </Navbar>

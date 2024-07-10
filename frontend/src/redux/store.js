@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit'
-import darkModeReducer from './slices/darkModeSlice'
+import rateReducer from './slices/rateSlice'
 
 export const store = configureStore({
     reducer: {
-        darkMode: darkModeReducer
+        rate: rateReducer,
     }
 })
