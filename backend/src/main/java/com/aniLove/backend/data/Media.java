@@ -1,5 +1,7 @@
 package com.aniLove.backend.data;
 
+import org.jsoup.Jsoup;
+
 public class Media {
     public static class Title{
         private String romaji;
@@ -43,7 +45,7 @@ public class Media {
         this.idMal = idMal;
         this.title = title;
         this.coverImage = coverImage;
-        this.description = description;
+        this.description = Jsoup.parse(description).text();
         this.bannerImage = bannerImage;
         this.genres = genres;
     }

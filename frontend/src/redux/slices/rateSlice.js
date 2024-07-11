@@ -26,19 +26,22 @@ export const rateSlice = createSlice({
     initialState: initialState,
     reducers: {
         like: (state, action) => {
-            stateChangeRemover(state, action)
-            action.payload['_state'] = 'like'
-            state.like.push(action.payload)
+            const anime = { ...action.payload }
+            stateChangeRemover(state, anime)
+            anime['_state'] = 'like'
+            state.like[anime.id] = anime
         },
         dislike: (state, action) => {
-            stateChangeRemover(state, action)
-            action.payload['_state'] = 'dislike'
-            state.dislike.push(action.payload)
+            const anime = { ...action.payload }
+            stateChangeRemover(state, anime)
+            anime['_state'] = 'dislike'
+            state.dislike[anime.id] = anime
         },
         neutral: (state, action) => {
-            stateChangeRemover(state, action)
-            action.payload['_state'] = 'neutral'
-            state.neutral.push(action.payload)
+            const anime = { ...action.payload }
+            stateChangeRemover(state, anime)
+            anime['_state'] = 'neutral'
+            state.neutral[anime.id] = anime
         },
     }
 })

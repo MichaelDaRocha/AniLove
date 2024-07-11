@@ -13,3 +13,19 @@
     background-color: var(--primary-white);
     color: var(--primary-black);
 }
+
+.card-span{
+    display: block;
+    overflow-y: auto;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.card-span::-webkit-scrollbar{
+    display: none;
+}
+
+.card-rating > *:hover{
+    cursor: pointer;
+}
